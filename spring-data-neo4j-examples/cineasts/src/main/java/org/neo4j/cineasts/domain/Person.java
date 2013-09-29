@@ -22,8 +22,6 @@ public class Person {
     private Date birthday;
     private String birthplace;
     private String biography;
-    private Integer version;
-    private Date lastModified;
     private String profileImageUrl;
 
     protected Person(String id, String name) {
@@ -63,14 +61,6 @@ public class Person {
         this.biography = biography;
     }
 
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
-    }
-
     public Date getBirthday() {
         return birthday;
     }
@@ -81,14 +71,6 @@ public class Person {
 
     public String getBiography() {
         return biography;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public Date getLastModified() {
-        return lastModified;
     }
 
     public void setProfileImageUrl(String profileImageUrl) {

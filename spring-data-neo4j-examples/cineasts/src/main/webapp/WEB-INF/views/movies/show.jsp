@@ -64,7 +64,7 @@
             <c:set var="youtube" value="movie.youtubeId"/>
             <c:choose>
                 <c:when test="${not empty youtube}">
-                    <iframe title="YouTube video player" width="200" height="143" src="http://www.youtube.com/embed/${movie.youtubeId}?rel=0&controls=0&egm=1&fs=1" frameborder="0" allowfullscreen></iframe>
+                    <iframe title="YouTube video player" width="320" height="180" src="http://www.youtube.com/embed/${movie.trailer}?rel=0&controls=0&egm=1&fs=1" frameborder="0" allowfullscreen></iframe>
                 </c:when>
                 <c:otherwise>
                     <ul>

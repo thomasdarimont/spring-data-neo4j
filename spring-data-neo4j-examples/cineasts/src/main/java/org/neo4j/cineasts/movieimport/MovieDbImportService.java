@@ -1,19 +1,24 @@
 package org.neo4j.cineasts.movieimport;
 
-import org.neo4j.cineasts.domain.*;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.neo4j.cineasts.domain.Actor;
+import org.neo4j.cineasts.domain.Director;
+import org.neo4j.cineasts.domain.Movie;
+import org.neo4j.cineasts.domain.Person;
+import org.neo4j.cineasts.domain.Roles;
+import org.neo4j.cineasts.repository.ActorRepository;
 import org.neo4j.cineasts.repository.DirectorRepository;
 import org.neo4j.cineasts.repository.MovieRepository;
-import org.neo4j.cineasts.repository.ActorRepository;
+import org.neo4j.helpers.collection.Iterables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.template.Neo4jOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @Service
 public class MovieDbImportService {
@@ -71,7 +76,7 @@ public class MovieDbImportService {
 
         Map data = loadMovieData(movieId);
         if (data.containsKey("not_found")) throw new RuntimeException("Data for Movie "+movieId+" not found.");
-        movieDbJsonMapper.mapToMovie(data, movie);
+        movieDbJsonMapper.mapToMovie(data, movie, client.getBaseImageUrl());
         movieRepository.save(movie);
         relatePersonsToMovie(movie, data);
         return movie;
@@ -87,12 +92,17 @@ public class MovieDbImportService {
         return data;
     }
 
+    @SuppressWarnings("unchecked")
     private void relatePersonsToMovie(Movie movie, Map data) {
-        @SuppressWarnings("unchecked") Collection<Map> cast = (Collection<Map>) data.get("cast");
-        for (Map entry : cast) {
+        Map casts = (Map) data.get("casts");
+        Collection<Map> cast = (Collection<Map>) casts.get("cast");
+        Collection<Map> crew = (Collection<Map>) casts.get("crew");
+        
+        for (Map entry : Iterables.concat(cast, crew)) {
             String id = "" + entry.get("id");
             String jobName = (String) entry.get("job");
-            Roles job = movieDbJsonMapper.mapToRole(jobName);
+            // Job is not included for cast collection - default to 'Actor'
+            Roles job = movieDbJsonMapper.mapToRole(jobName == null ? "Actor" : jobName);
             if (job==null) {
                 if (logger.isInfoEnabled()) logger.info("Could not add person with job "+jobName+" "+entry);
                 continue;
@@ -123,7 +133,7 @@ public class MovieDbImportService {
         if (person!=null) return (T)person;
         Map data = loadPersonData(personId);
         if (data.containsKey("not_found")) throw new RuntimeException("Data for Person "+personId+" not found.");
-        movieDbJsonMapper.mapToPerson(data, newPerson);
+        movieDbJsonMapper.mapToPerson(data, newPerson, client.getBaseImageUrl());
         return template.save(newPerson);
     }
 

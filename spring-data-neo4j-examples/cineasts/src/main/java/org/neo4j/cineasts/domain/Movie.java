@@ -45,8 +45,6 @@ public class Movie {
     private String trailer;
     private String genre;
     private String studio;
-    private Integer version;
-    private Date lastModified;
     private String imageUrl;
 
     public Movie() {
@@ -150,14 +148,6 @@ public class Movie {
         this.studio = studio;
     }
 
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public void setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
-    }
-
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
@@ -196,14 +186,6 @@ public class Movie {
 
     public String getStudio() {
         return studio;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public Date getLastModified() {
-        return lastModified;
     }
 
     public String getImageUrl() {

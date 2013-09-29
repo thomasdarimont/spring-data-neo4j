@@ -12,35 +12,53 @@ public class MovieDbApiClient {
     private final String baseUrl = "http://api.themoviedb.org/";
     private final String apiKey;
     protected final ObjectMapper mapper;
+    private String baseImageUrl;
 
     public MovieDbApiClient(String apiKey) {
         this.apiKey = apiKey;
         mapper = new ObjectMapper();
     }
-
-    public Map getMovie(String id) {
-        return loadJsonData(id, buildMovieUrl(id));
+    
+    private Map getConfiguration() {
+    	return loadJsonData(buildConfigurationUrl());
+    }
+    
+    public String getBaseImageUrl() {
+    	if (baseImageUrl == null) {
+    		Map config = getConfiguration();
+    		Map imageConfig = (Map) config.get("images");
+    		baseImageUrl = (String) imageConfig.get("base_url");
+    	}
+    	return baseImageUrl;
     }
 
-    private Map loadJsonData(String id, String url) {
+    public Map getMovie(String id) {
+        return loadJsonData(buildMovieUrl(id));
+    }
+
+    private Map loadJsonData(String url) {
         try {
-            List value = mapper.readValue(new URL(url), List.class);
-            if (value.isEmpty() || value.get(0).equals("Nothing found.")) return Collections.singletonMap("not_found",System.currentTimeMillis());
-            return (Map) value.get(0);
+            Map value = mapper.readValue(new URL(url), Map.class);
+            if (value == null) return Collections.singletonMap("not_found",System.currentTimeMillis());
+            return (Map) value;
         } catch (Exception e) {
             throw new RuntimeException("Failed to get data from " + url, e);
         }
     }
+    
+    private String buildConfigurationUrl() {
+    	return String.format("%s3/configuration?api_key=%s", baseUrl, apiKey);
+    }
 
     private String buildMovieUrl(String movieId) {
-        return String.format("%s2.1/Movie.getInfo/en/json/%s/%s", baseUrl, apiKey, movieId);
+        return String.format("%s3/movie/%s?api_key=%s&append_to_response=casts,trailers", baseUrl, movieId, apiKey);
     }
 
     public Map getPerson(String id) {
-        return loadJsonData(id, buildPersonUrl(id));
+        return loadJsonData(buildPersonUrl(id));
     }
 
     private String buildPersonUrl(String personId) {
-        return String.format("%s2.1/Person.getInfo/en/json/%s/%s", baseUrl, apiKey, personId);
+        return String.format("%s3/person/%s?api_key=%s", baseUrl, personId, apiKey);
     }
 }
