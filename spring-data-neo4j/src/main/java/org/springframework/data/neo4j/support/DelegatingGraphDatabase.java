@@ -63,9 +63,6 @@ public class DelegatingGraphDatabase implements GraphDatabase {
     private ResultConverter resultConverter;
     private volatile CypherQueryEngineImpl cypherQueryEngine;
 
-    public DelegatingGraphDatabase() {
-    }
-
     public DelegatingGraphDatabase(final GraphDatabaseService delegate) {
         this(delegate,null);
     }

@@ -54,13 +54,16 @@ import org.springframework.data.neo4j.support.typerepresentation.TypeRepresentat
 import org.springframework.data.neo4j.support.typesafety.TypeSafetyPolicy;
 import org.springframework.data.support.IsNewStrategyFactory;
 import org.springframework.transaction.PlatformTransactionManager;
+
 import javax.validation.Validator;
 
 import java.util.Arrays;
 import java.util.Set;
 
 import static java.util.Arrays.asList;
+
 import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.Disposes;
 
 /**
  * Abstract base class for code based configuration of Spring managed Neo4j infrastructure.
@@ -258,11 +261,6 @@ public abstract class Neo4jConfiguration {
         if (graphDatabaseService instanceof GraphDatabase) return (GraphDatabase) graphDatabaseService;
         return new DelegatingGraphDatabase(graphDatabaseService);
     }
-
-//    @Bean
-//    public ConfigurationCheck configurationCheck() throws Exception {
-//        return new ConfigurationCheck(neo4jTemplate(),neo4jTransactionManager());
-//    }
 
     @Bean
     public PersistenceExceptionTranslator persistenceExceptionTranslator() {

@@ -35,7 +35,6 @@ import org.springframework.data.neo4j.model.Person;
  * @author Nicki Watt
  * @author Oliver Gierke
  */
-@Ignore("Bad transaction handling")
 public class CdiExtensionIntegrationTests {
 
 	static CdiTestContainer container;
