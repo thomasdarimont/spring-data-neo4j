@@ -24,13 +24,11 @@ import org.neo4j.ogm.model.Property;
 import org.neo4j.ogm.session.SessionFactory;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Simple integration test based on cineasts that exercises relationship entities.
@@ -149,7 +147,11 @@ public class CineastsIntegrationTest extends InMemoryServerTest {
         Collection<User> users = session.loadByProperty(User.class,new Property<String, Object>("login","aki"));
         assertEquals(1,users.size());
         User aki = users.iterator().next();
-        assertEquals("Aki Kaurismäki", aki.getName());
+        try {
+            assertArrayEquals("Aki Kaurismäki".getBytes("UTF-8"), aki.getName().getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            fail("UTF-8 encoding not supported on this platform");
+        }
 
     }
 
