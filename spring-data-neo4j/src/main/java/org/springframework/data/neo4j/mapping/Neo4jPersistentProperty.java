@@ -76,7 +76,7 @@ public class Neo4jPersistentProperty implements PersistentProperty<Neo4jPersiste
 
             this.type = field.getType();
             this.rawType = this.type;
-            this.actualType = this.type;
+            this.actualType = this.type;   // simple type
 
             this.isAssociation = !fieldInfo.isSimple();
             this.isCollectionLike = !fieldInfo.isScalar();
@@ -85,8 +85,9 @@ public class Neo4jPersistentProperty implements PersistentProperty<Neo4jPersiste
 
             if (fieldInfo.isCollection()) {
                 this.actualType = classInfo.getType(fieldInfo.getTypeParameterDescriptor());
+                this.componentType = actualType;
             } else if (fieldInfo.isArray()) {
-                this.componentType = classInfo.getType(fieldInfo.getDescriptor());
+                this.actualType = field.getType().getComponentType();
             }
 
         } catch (Exception e) {
