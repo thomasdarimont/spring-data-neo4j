@@ -25,7 +25,25 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * This class implements Spring Data's PersistentEntity interface, scavenging the required data from the
+ * OGM's mapping classes in order to for SDN to play nicely with Spring Data REST.
+ *
+ * The main thing to note is that this class is effectively a shim for ClassInfo. We don't reload
+ * all the mapping information again.
+ *
+ * These attributes do not appear to be used/needed for SDN 4 to inter-operate correctly with SD-REST:
+ *
+ *      typeAlias
+ *      typeInformation
+ *      preferredConstructor (we always use the default constructor)
+ *      versionProperty
+ *
+ * Consequently their associated getter methods always return default values of null or [true|false]
+ * However, because these method calls are not expected, we also log a warning message if they get invoked
+ *
  * @author: Vince Bickers
+ * @since 4.0.0
+ *
  */
 public class Neo4jPersistentEntity<T> implements PersistentEntity<T, Neo4jPersistentProperty> {
 
@@ -37,11 +55,6 @@ public class Neo4jPersistentEntity<T> implements PersistentEntity<T, Neo4jPersis
     private Set<Association> associations = new HashSet<>();
     private Class<T> type;
 
-    private Class<?> typeAlias;
-    private TypeInformation<T> typeInformation;
-    private PreferredConstructor preferredConstructor;
-    private Neo4jPersistentProperty versionProperty;
-
     public Neo4jPersistentEntity(Class<T> clazz, ClassInfo classInfo, FieldInfo identityField) {
 
         this.name = classInfo.name();
@@ -49,147 +62,149 @@ public class Neo4jPersistentEntity<T> implements PersistentEntity<T, Neo4jPersis
 
         for (FieldInfo fieldInfo : classInfo.fieldsInfo().fields()) {
             String name = fieldInfo.getName();
+
+            logger.debug("[entity].creating property mapping {}.{}", this.name, fieldInfo.getName());
+
             Neo4jPersistentProperty property = new Neo4jPersistentProperty(this, classInfo, fieldInfo, (fieldInfo == identityField));
             this.properties.put(name, property);
-            logger.info("[entity].adding property mapping for " + fieldInfo.getName() + " to entity " + this.name);
+
 
             if (fieldInfo == identityField) {
-                logger.info("[entity].-> this is the identity property");
+                logger.debug("[entity].this is the identity property");
                 this.idProperty = property;
             }
             else if (property.isAssociation()) {
-                logger.info("[entity].-> this is an association property");
+                logger.debug("[entity].this is an association property");
                 associations.add(new Association(property, null));
             } else {
-                logger.info("[entity].-> this is a simple property");
+                logger.debug("[entity].this is a simple property");
             }
         }
-
 
     }
 
     @Override
     public String getName() {
-        logger.info("[entity].getName() returns");
+        logger.debug("[entity].getName() returns");
         return this.name;
     }
 
     @Override
     public PreferredConstructor<T, Neo4jPersistentProperty> getPersistenceConstructor() {
-        logger.info("[entity].getPersistenceConstructor() returns");
-        return this.preferredConstructor;
+        logger.warn("[entity].getPersistenceConstructor() called but not implemented");
+        return null;
     }
 
     @Override
     public boolean isConstructorArgument(PersistentProperty<?> property) {
-        logger.info("[entity].isConstructorArgument() returns false for: " + property);
+        logger.debug("[entity].isConstructorArgument({}) returns false", property);
         return false;
     }
 
     @Override
     public boolean isIdProperty(PersistentProperty<?> property) {
-        logger.info("[entity].isIdPropertyCalled() returns ? " + property);
+        logger.debug("[entity].isIdProperty() returns {}", (this.idProperty == property));
         return this.idProperty == property;
     }
 
     @Override
     public boolean isVersionProperty(PersistentProperty<?> property) {
-        logger.info("[entity].isIdPropertyCalled() returns false for: " + property);
+        logger.debug("[entity].isIdProperty({}) returns false", property);
         return false;
     }
 
     @Override
     public Neo4jPersistentProperty getIdProperty() {
-        logger.info("[entity].getIdProperty() returns " + this.idProperty);
+        logger.debug("[entity].getIdProperty() returns {}", this.idProperty);
         return this.idProperty;
     }
 
     @Override
     public Neo4jPersistentProperty getVersionProperty() {
-        logger.info("[entity].getVersionProperty() returns " + this.versionProperty);
-        return this.versionProperty;
+        logger.debug("[entity].getVersionProperty() returns null"); // by design
+        return null;
     }
 
     @Override
     public Neo4jPersistentProperty getPersistentProperty(String name) {
-        logger.info("[entity].getPersistentProperty() returns " + this.properties.get(name) + " for: " + name);
+        logger.debug("[entity].getPersistentProperty({}) returns {}", name, this.properties.get(name));
         return this.properties.get(name);
     }
 
     @Override
     public Neo4jPersistentProperty getPersistentProperty(Class<? extends Annotation> annotationType) {
-        logger.info("[entity].getPersistentProperty() returns null for annotation type: " + annotationType);
+        logger.warn("[entity].getPersistentProperty({}) called but not implemented", annotationType);
         return null;
     }
 
     @Override
     public boolean hasIdProperty() {
-        logger.info("[entity].hasIdProperty() returns " + (this.idProperty != null));
+        logger.debug("[entity].hasIdProperty() returns {}", (this.idProperty != null));
         return this.idProperty != null;
     }
 
     @Override
     public boolean hasVersionProperty() {
-        logger.info("[entity].hasVersionProperty() returns " + (this.versionProperty != null));
-        return this.versionProperty != null;
+        logger.debug("[entity].hasVersionProperty() returns false");  // by design
+        return false;
     }
 
     @Override
     public Class<T> getType() {
-        logger.info("[entity].getType() returns " + this.type);
+        logger.debug("[entity].getType() returns {}", this.type);
         return this.type;
     }
 
     @Override
     public Object getTypeAlias() {
-        logger.info("[entity].getTypeAlias() returns " + this.typeAlias);
-        return this.typeAlias;
+        logger.debug("[entity].getTypeAlias() called but not implemented");
+        return null;
     }
 
     @Override
     public TypeInformation<T> getTypeInformation() {
-        logger.info("[entity].getTypeInformation() returns " + this.typeInformation);
-        return this.typeInformation;
+        logger.warn("[entity].getTypeInformation() called but not implemented");
+        return null;
     }
 
     @Override
     public void doWithProperties(PropertyHandler<Neo4jPersistentProperty> handler) {
-        logger.info("[entity].doWithProperties(1) called");
+        logger.warn("[entity].doWithProperties({}) called but not implemented", handler);
     }
 
     @Override
     public void doWithProperties(SimplePropertyHandler handler) {
-        logger.info("[entity].doWithProperties(2) called");     }
+        logger.warn("[entity].doWithProperties({}) called but not implemented", handler);
+    }
 
     @Override
     public void doWithAssociations(AssociationHandler<Neo4jPersistentProperty> handler) {
-        logger.info("[entity].doWithAssociations(1) called");
+        logger.warn("[entity].doWithAssociations({}) called but not implemented", handler);
     }
 
     @Override
     public void doWithAssociations(SimpleAssociationHandler handler) {
-        logger.info("[entity].doWithAssociations(2) called");
+        logger.debug("[entity].doWithAssociations({handler}) called");
         for (Association<?> association : associations) {
             handler.doWithAssociation(association);
         }
-
     }
 
     @Override
     public <A extends Annotation> A findAnnotation(Class<A> annotationType) {
-        logger.info("[entity].findAnnotation called");
+        logger.warn("[entity].findAnnotation({}) called but not implemented", annotationType);
         return null;
     }
 
     @Override
     public PersistentPropertyAccessor getPropertyAccessor(Object bean) {
-        logger.info("[entity].getPropertyAccessor called");
+        logger.warn("[entity].getPropertyAccessor({}) called but not implemented", bean);
         return null;
     }
 
     @Override
     public IdentifierAccessor getIdentifierAccessor(Object bean) {
-        logger.info("[entity].getIdentifierAccessor called");
+        logger.warn("[entity].getIdentifierAccessor({}) called but not implemented", bean);
         return null;
     }
 }
