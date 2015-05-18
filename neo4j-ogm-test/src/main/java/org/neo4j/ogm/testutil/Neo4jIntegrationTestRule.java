@@ -62,8 +62,8 @@ public class Neo4jIntegrationTestRule implements TestRule {
     private static final int DEFAULT_TEST_SERVER_PORT = 7575;
 
     private final int port;
-    private WrappingNeoServerBootstrapper bootstrapper;
-    private GraphDatabaseService database;
+    private final WrappingNeoServerBootstrapper bootstrapper;
+    private final GraphDatabaseService database;
 
     /**
      * Constructs a new {@link Neo4jIntegrationTestRule} that starts a Neo4j server listening on any available local port.
