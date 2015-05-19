@@ -8,7 +8,7 @@ Michael Hunger; Oliver Gierke; Vince Bickers; Adam George; Michal Bachman
 :spring-data-commons-docs: https://raw.githubusercontent.com/spring-projects/spring-data-commons/issue/DATACMNS-567/src/main/asciidoc
 // Sections that have to be revisited are annotated with TODO SDN4_GA
 
-Spring Data Neo4j Version 4-M1 (Feb 2015)
+Spring Data Neo4j Version 4-RC1 (May 2015)
 
 (C) 2010-2015 Neo Technology, Inc. - Pivotal Software, Inc.
 

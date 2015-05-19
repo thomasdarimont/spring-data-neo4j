@@ -6,13 +6,6 @@ In general, relationships are categorized by a type, and start and end nodes (wh
 Relationships can have an arbitrary number of properties. 
 Spring Data Neo4j has special support to represent Neo4j relationships as entities too, but it is often not needed.
 
-// TODO SDN4_GA
-[NOTE]
-====
-The Milestone 1 of Spring Data Neo4j 4 provides support for Relationship-Entities but it is not fully implemented and tested.
-Use it only for providing feedback to the authors.
-====
-
 == @Relationship: Connecting node entities
 
 Every field of a node entity that references one or more other node entities is backed by relationships in the graph. 
@@ -70,13 +63,18 @@ Fields in relationship entities are similar to node entities, in that they're pe
 For accessing the two endpoints of the relationship, two special annotations are available: `@StartNode` and `@EndNode`. 
 A field annotated with one of these annotations will provide read-only access to the corresponding endpoint, depending on the chosen annotation.
 
+[NOTE]
+====
+You must include `@RelationshipEntity` plus exactly one `@StartNode` field and one `@EndNode` field on your relationship entity classes or the OGM will throw a MappingException when reading or writing.
+It is not possible to use relationship entities in a non-annotated domain model.
+====
+
 For controlling the relationship-type a `String` attribute called `type` is available on the `@RelationshipEntity` annotation.  
 Like the simple strategy for labelling node entities, if this is unset then the name of the class is used to derive the relationship type.  
 
 [NOTE]
 ====
-You must include `@RelationshipEntity` plus exactly one `@StartNode` field and one `@EndNode` field on your relationship entity classes or the OGM will throw a MappingException when reading or writing.  
-It is not possible to use relationship entities in a non-annotated domain model.
+Version 4.0 of Spring Data Neo4j requires you to define the `type` on the `@RelationshipEntity` annotation as well as on the `@Relationship` annotations on the start and end node entities.
 ====
 
 .A simple Relationship entity
@@ -85,10 +83,10 @@ It is not possible to use relationship entities in a non-annotated domain model.
 @NodeEntity
 public class Actor {
     Long id;
-    private Role playedIn;
+    @Relationship(type="ACTS_IN", direction="OUTGOING")  private Set<Role> roles;
 }
 
-@RelationshipEntity
+@RelationshipEntity(type="ACTS_IN")
 public class Role {
     @GraphId   private Long relationshipId;
     @Property  private String title;
@@ -100,6 +98,7 @@ public class Role {
 public class Movie {
     private Long id;
     private String title;
+    @Relationship(type="ACTS_IN", direction="INCOMING") Set<Role> roles=new HashSet<>();
 }
 ----
 

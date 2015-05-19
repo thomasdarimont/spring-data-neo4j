@@ -157,6 +157,5 @@ These features cannot be supported by Cypher and have therefore been dropped fro
 
 * Full text indexes and queries
 * Geospatial queries
-* `@QueryResult`
 
 Please provide feedback on the new APIs of SDN 4 and the migration needs to spring-data-neo4j@neotechnology.com or via a https://jira.spring.io/browse/DATAGRAPH[JIRA issue]

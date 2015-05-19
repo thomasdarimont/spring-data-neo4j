@@ -86,14 +86,13 @@ returns the names of the actors that have a ACTS_IN relationship to the movie no
 `MATCH (movie:Movie {title:'Matrix'})<-[r:RATED]-(user) WHERE r.stars > 3 RETURN user.name, r.stars, r.comment`::
 returns users names and their ratings (>3) of the movie titled 'Matrix'
 
-`MATCH (user:User {name='Michael'})-[:FRIEND]-(friend)-[r:RATED]->(movie) RETURN movie.title, AVG(r.stars), COUNT(*) ORDER BY AVG(r.stars) DESC, COUNT(*) DESC`::
+`MATCH (user:User {name='Michael'})-[:FRIEND]-(friend)-[r:RATED]->(movie) RETURN movie.title, AVG(r.stars), COUNT(\*) ORDER BY AVG(r.stars) DESC, COUNT(*) DESC`::
 returns the movies rated by the friends of the user 'Michael', aggregated by `movie.title`, with averaged ratings and rating-counts sorted by both
 
 Examples of Cypher queries placed on repository methods with @Query where values are replaced with method parameters,
 as described in the <<reference_programming_model_annotatedQueries>>) section.
 
 ////
-TODO SDN4_GA
 [source,java]
 ----
 public interface MovieRepository extends GraphRepository<Movie> {
@@ -170,16 +169,24 @@ public interface PersonRepository extends GraphRepository<Person> {
     // MATCH (person:Person {name={0}}) RETURN person
     Person findByName(String name);
 
-    // MATCH (person:Person) WHERE person.name =~ '.*{0}.*' RETURN person
-    Iterable<Person> findByNameLike(String name)
+    // MATCH (person:Person) WHERE person.age > {0} ' RETURN person
+    Iterable<Person> findByAgeGreaterThan(int age)
 
     // MATCH (person:Person) 
     // WHERE person.age = {0} AND person.married = {1}
     // RETURN person
     Iterable<Person> findByAgeAndMarried(int age, boolean married)
 
+    // MATCH (person:Person {name={0}})-[:LIVES_IN]->MATCH (location:Location {city={1}})
+    // RETURN person
+    Iterable<Person> findByNameAndLocationCity(String name, String city)
+
 }
 ----
+
+[NOTE]
+Version 4 of Spring Data Neo4j supports the default equals comparison, Greater Than and Less Than with AND or OR operators for derived finder methods defined on both node and relationship entity repositories.
+A single nested property defined on the node entity to be returned by the derived finder is also supported.
 
 == Creating repositories
 

@@ -15,7 +15,8 @@ The default implementation of this uses the following convention:
 . Plain method (getter/setter)
 . Plain field
 
-The object graph mapping comes into play whenever an entity is constructed from a node or relationship. 
+This implementation will find plain getters/setters as per JavaBean conventions.
+The object graph mapping comes into play whenever an entity is constructed from a node or relationship.
 This could be done explicitly during the lookup or create operations of the repositories and the `Neo4jTemplate` but also implicitly while executing any graph operation that returns nodes or relationships and expecting mapped entities to be returned.
 
 Entities handled by Spring Data Neo4j must have one empty public constructor to allow the library to construct the objects.
