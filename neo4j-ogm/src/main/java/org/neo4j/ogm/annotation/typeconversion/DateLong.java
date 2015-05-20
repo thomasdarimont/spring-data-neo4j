@@ -15,6 +15,7 @@ package org.neo4j.ogm.annotation.typeconversion;
 import java.lang.annotation.*;
 
 /**
+ * Converts a {@see java.util.Date} to a {@see java.lang.Long} for storage in the graph and back to a {@see java.util.Date} when retrieved.
  * @author Vince Bickers
  */
 @Retention(RetentionPolicy.RUNTIME)

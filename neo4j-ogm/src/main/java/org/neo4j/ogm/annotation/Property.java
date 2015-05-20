@@ -34,5 +34,9 @@ public @interface Property {
     static final String CLASS = "org.neo4j.ogm.annotation.Property";
     static final String NAME = "name";
 
+    /**
+     * The property name to be used in the graph.
+     * @return
+     */
     String name() default "";
 }

@@ -21,48 +21,193 @@ import org.neo4j.ogm.session.result.QueryStatistics;
 import org.neo4j.ogm.session.transaction.Transaction;
 
 /**
+ * Provides core functionality to persist objects to the graph and load them in a variety of ways.
+ *
  * @author Vince Bickers
  * @author Luanne Misquitta
  */
 public interface Session {
 
+    /**
+     * Loads an entity of type T that matches the specified ID to the default depth.
+     * @param type  The type of entity to load
+     * @param id    The ID of the node or relationship to match
+     * @param <T>   The type of entity to load
+     * @return The instance of T loaded from the database that matches the specified ID or <code>null</code> if no match is found
+     */
     <T> T load(Class<T> type, Long id);
 
+    /**
+     * Loads an entity of type T that matches the specified ID to the default depth.
+     * @param type  The type of entity to load
+     * @param id    The ID of the node or relationship to match
+     * @param depth The maximum number of relationships away from the identified object to follow when loading related entities.
+     *              A value of 0 just loads the object's properties and no related entities.  A value of -1 implies no depth limit.
+     * @param <T>   The type of entity to load
+     * @return The instance of T loaded from the database that matches the specified ID or <code>null</code> if no match is found
+     */
     <T> T load(Class<T> type, Long id, int depth);
 
+
+    /**
+     * Retrieves all the entities of the given class in the database that match the specified IDs hydrated to the default depth.
+     * @param type  The type of entity to load
+     * @param ids   The IDs of the node or relationship to match
+     * @param <T>   The type of entity to load
+     * @returnA     {@link Collection} containing instances of the given type in the database which match the specified IDs or an empty collection if none
+     *              are found, never <code>null</code>
+     */
     <T> Collection<T> loadAll(Class<T> type, Collection<Long> ids);
 
+    /**
+     * Retrieves all the entities of the given class in the database that match the specified IDs hydrated to the default depth.
+     * @param type  The type of entity to load
+     * @param ids   The IDs of the node or relationship to match
+     * @param depth The maximum number of relationships away from the identified object to follow when loading related entities.
+     *              A value of 0 just loads the object's properties and no related entities.  A value of -1 implies no depth limit.
+     *  @param <T>   The type of entity to load
+     * @returnA     {@link Collection} containing instances of the given type in the database which match the specified IDs or an empty collection if none
+     *              are found, never <code>null</code>
+     */
     <T> Collection<T> loadAll(Class<T> type, Collection<Long> ids, int depth);
 
+    /**
+     * Retrieves all the entities of the given class in the database hydrated to the default depth.
+     * @param type The type of entity to return.
+     * @param <T>  The type of entity to return.
+     * @return A {@link Collection} containing all instances of the given type in the database or an empty collection if none
+     *         are found, never <code>null</code>
+     */
     <T> Collection<T> loadAll(Class<T> type);
 
+    /**
+     * Retrieves all the entities of the given class in the database hydrated to the default depth.
+     * @param type  The type of entity to return.
+     * @param depth The maximum number of relationships away from the identified object to follow when loading related entities.
+     *              A value of 0 just loads the object's properties and no related entities.  A value of -1 implies no depth limit.
+     * @param <T>  The type of entity to return.
+     * @return A {@link Collection} containing all instances of the given type in the database or an empty collection if none
+     *         are found, never <code>null</code>
+     */
     <T> Collection<T> loadAll(Class<T> type, int depth);
 
+    /**
+     * Reloads all of the entities in the given {@link Collection} to the specified depth.  Of course, this will
+     * only work for persistent objects (i.e., those with a non-null <code>@GraphId</code> field).
+     *
+     * @param objects The objects to re-hydrate
+     * @param <T>  The type of entity to return.
+     * @return A new {@link Collection} of entities matching those in the given collection hydrated to the given depth
+     */
     <T> Collection<T> loadAll(Collection<T> objects);
 
+    /**
+     * Reloads all of the entities in the given {@link Collection} to the specified depth.  Of course, this will
+     * only work for persistent objects (i.e., those with a non-null <code>@GraphId</code> field).
+     *
+     * @param objects The objects to re-hydrate
+     * @param depth   The depth to which the objects should be hydrated
+     * @param <T>   The type of entity to return.
+     * @return A new {@link Collection} of entities matching those in the given collection hydrated to the given depth
+     */
     <T> Collection<T> loadAll(Collection<T> objects, int depth);
 
+    /**
+     * Retrieves all the entities of the specified type, hydrated to the default depth, that contains a property matching the given name with the given value.
+     *
+     * @param type      The type of entity to return.
+     * @param property  A {@link Parameter} describing the property to match on.
+     * @param <T>       The type of entity to return.
+     * @return  A {@link Collection} containing all the entities that match the given property or an empty {@link Collection} if
+     *         there aren't any matches, never <code>null</code>
+     */
     <T> Collection<T> loadByProperty(Class<T> type, Parameter property);
 
+    /**
+     * Retrieves all the entities of the specified type, hydrated to the specified depth, that contains a property matching the given name with the given value.
+     *
+     * @param type      The type of entity to return.
+     * @param property  A {@link Parameter} describing the property to match on.
+     * @param depth     The depth to which the objects should be hydrated
+     * @param <T>       The type of entity to return.
+     * @return  A {@link Collection} containing all the entities that match the given property or an empty {@link Collection} if
+     *         there aren't any matches, never <code>null</code>
+     */
     <T> Collection<T> loadByProperty(Class<T> type, Parameter property, int depth);
 
+    /**
+     * Retrieves all the entities of the specified type, hydrated to the default depth, that contains properties matching the given name with the given value.
+     *
+     * @param type        The type of entity to return.
+     * @param properties  A {@link List} of {@link Parameter} describing the properties to match on.
+     * @param <T>         The type of entity to return.
+     * @return  A {@link Collection} containing all the entities that match the given properties or an empty {@link Collection} if
+     *         there aren't any matches, never <code>null</code>
+     */
     <T> Collection<T> loadByProperties(Class<T> type, List<Parameter> properties);
 
+    /**
+     * Retrieves all the entities of the specified type, hydrated to the specified depth, that contains properties matching the given name with the given value.
+     *
+     * @param type        The type of entity to return.
+     * @param properties  A {@link List} of {@link Parameter} describing the properties to match on.
+     * @param depth         The depth to which the objects should be hydrated
+     * @param <T>         The type of entity to return.
+     * @return  A {@link Collection} containing all the entities that match the given properties or an empty {@link Collection} if
+     *         there aren't any matches, never <code>null</code>
+     */
     <T> Collection<T> loadByProperties(Class<T> type, List<Parameter> properties, int depth);
 
 
-    QueryStatistics execute(String jsonStatements);
+    /**
+     * Issue a single Cypher update operation (such as a <tt>CREATE</tt>, <tt>MERGE</tt> or <tt>DELETE</tt> statement).
+     *
+     * @param jsonStatements The Cypher statement to execute
+     * @return {@link QueryStatistics} representing statistics about graph modifications as a result of the cypher execution.
+     */
+    QueryStatistics execute(String statement);
 
+    /**
+     * Delete all nodes and relationships from the graph database.
+     */
     void purgeDatabase();
 
+    /**
+     * Clear from memory the graph objects known to the OGM.
+     */
     void clear();
 
+    /**
+     * Saves the specified entity in the graph database.  If the entity is currently transient then the persistent version of
+     * the entity will be returned, containing its new graph ID.
+     *
+     * @param object The entity to save
+     * @return The saved entity
+     */
     <T> void save(T object);
 
+    /**
+     * Saves the specified entity in the graph database up to the specified depth.  If the entity is currently transient then the persistent version of
+     * the entity will be returned, containing its new graph ID.
+     *
+     * @param object The entity to save
+     * @param depth  The depth to which the objects should be saved
+     * @return The saved entity
+     */
     <T> void save(T object, int depth);
 
+    /**
+     * Removes the given node or relationship entity from the graph.
+     *
+     * @param object The entity to delete
+     */
     <T> void delete(T object);
 
+    /**
+     * Removes all nodes or relationship entities of the given type from the graph.
+     *
+     * @param type  The type of entity to delete
+     */
     <T> void deleteAll(Class<T> type);
 
 

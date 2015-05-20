@@ -15,6 +15,7 @@ package org.neo4j.ogm.annotation.typeconversion;
 import java.lang.annotation.*;
 
 /**
+ * Converts {@see java.lang.Enum} types using the enum’s name() method for storage in the graph and Enum.valueOf() during retrieval.
  * @author Vince Bickers
  */
 @Retention(RetentionPolicy.RUNTIME)

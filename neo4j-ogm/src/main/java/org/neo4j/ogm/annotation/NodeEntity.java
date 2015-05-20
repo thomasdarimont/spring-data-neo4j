@@ -33,5 +33,9 @@ public @interface NodeEntity {
     static final String CLASS = "org.neo4j.ogm.annotation.NodeEntity";
     static final String LABEL = "label";
 
+    /**
+     * The label to be used in the graph.
+     * @return
+     */
     String label() default "";
 }

@@ -19,9 +19,7 @@ import java.lang.annotation.*;
  *
  * This annotation is always needed for relationship-backed entities.
  *
- * The type attribute supplies the relatoionship-type in the graph, and
- * can be omitted if the domain entity's simple class name matches
- * exactly the relationship type.
+ * The type attribute is required and supplies the relatoionship-type in the graph.
  *
  * @author Michal Bachman
  */
@@ -34,5 +32,9 @@ public @interface RelationshipEntity {
     static final String CLASS = "org.neo4j.ogm.annotation.RelationshipEntity";
     static final String TYPE = "type";
 
+    /**
+     * The relationship type in the graph.
+     * @return the relationship type
+     */
     String type() default "";
 }

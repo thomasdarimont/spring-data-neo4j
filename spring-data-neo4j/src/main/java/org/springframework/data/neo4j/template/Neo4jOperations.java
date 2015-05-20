@@ -140,8 +140,7 @@ public interface Neo4jOperations {
     <T> T save(T entity);
 
     /**
-     * Removes the given node or relationship entity from the graph.  The entity is first removed
-     * from all indexes and then deleted.
+     * Removes the given node or relationship entity from the graph.
      *
      * @param entity The entity to delete
      */

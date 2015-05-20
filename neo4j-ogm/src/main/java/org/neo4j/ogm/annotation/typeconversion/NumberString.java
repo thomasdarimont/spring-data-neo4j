@@ -15,6 +15,7 @@ package org.neo4j.ogm.annotation.typeconversion;
 import java.lang.annotation.*;
 
 /**
+ * Converts a {@see java.lang.Number} to a {@see java.lang.String} for storage in the graph and back to a {@see java.lang.Number} during retrieval.
  * @author Vince Bickers
  */
 @Retention(RetentionPolicy.RUNTIME)

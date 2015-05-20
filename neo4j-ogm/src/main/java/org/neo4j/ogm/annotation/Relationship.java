@@ -15,6 +15,9 @@ package org.neo4j.ogm.annotation;
 import java.lang.annotation.*;
 
 /**
+ * Identifies a relationship to another entity in the graph.
+ * This annotation is not required unless the related entity is a {@see RelationshipEntity}
+ *
  * @author Vince Bickers
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -30,6 +33,15 @@ public @interface Relationship {
     static final String OUTGOING = "OUTGOING";
     static final String UNDIRECTED = "UNDIRECTED";
 
+    /**
+     * The relationship type to be used in the graph. If not specified, it defaults to the Upper Snake Case field name.
+     * @return the relationship type
+     */
     String type() default "";
+
+    /**
+     * The direction of the relationship.
+     * @return the direction of the relationship
+     */
     String direction() default OUTGOING;
 }

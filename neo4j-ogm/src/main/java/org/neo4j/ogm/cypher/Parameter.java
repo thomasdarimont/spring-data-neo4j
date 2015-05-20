@@ -21,7 +21,7 @@
 package org.neo4j.ogm.cypher;
 
 /**
- * A parameter along with filter information to be added to a query.
+ * A parameter which forms a filter on a query.
 
  * @author Luanne Misquitta
  */
@@ -86,6 +86,11 @@ public class Parameter {
 	public Parameter() {
 	}
 
+	/**
+	 * Construct a parameter using the name of the field on the entity and the value to filter by
+	 * @param propertyName the name of the field on the entity
+	 * @param propertyValue the value to filter by
+	 */
 	public Parameter(String propertyName, Object propertyValue) {
 		this.propertyName = propertyName;
 		this.propertyValue = propertyValue;
@@ -95,6 +100,11 @@ public class Parameter {
 		return relationshipDirection;
 	}
 
+	/**
+	 * Set the relationship direction from the parent entity to the nested property.
+	 * Used internally in conjunction with Spring derived finders.
+	 * @param relationshipDirection the relationship direction as defined in {@see org.neo4j.ogm.annotation.Relationship}
+	 */
 	public void setRelationshipDirection(String relationshipDirection) {
 		this.relationshipDirection = relationshipDirection;
 	}
@@ -103,6 +113,10 @@ public class Parameter {
 		return propertyName;
 	}
 
+	/**
+	 * Set the name of the field on the entity to use in the filter
+	 * @param propertyName the name of the field on the entity
+	 */
 	public void setPropertyName(String propertyName) {
 		this.propertyName = propertyName;
 	}
@@ -111,6 +125,10 @@ public class Parameter {
 		return propertyValue;
 	}
 
+	/**
+	 * Set the value of the property to filter by
+	 * @param propertyValue the property value
+	 */
 	public void setPropertyValue(Object propertyValue) {
 		this.propertyValue = propertyValue;
 	}
@@ -119,6 +137,11 @@ public class Parameter {
 		return propertyPosition;
 	}
 
+	/**
+	 * Set the position of the property.
+	 * Used internally in conjuction with Spring derived finders.
+	 * @param propertyPosition the property position
+	 */
 	public void setPropertyPosition(Integer propertyPosition) {
 		this.propertyPosition = propertyPosition;
 	}
@@ -127,6 +150,10 @@ public class Parameter {
 		return comparisonOperator;
 	}
 
+	/**
+	 * Set the {@see ComparisonOperator} to be used when filtering
+	 * @param comparisonOperator the {@see ComparisonOperator}
+	 */
 	public void setComparisonOperator(ComparisonOperator comparisonOperator) {
 		this.comparisonOperator = comparisonOperator;
 	}
@@ -135,6 +162,10 @@ public class Parameter {
 		return booleanOperator;
 	}
 
+	/**
+	 * Set the {@see BooleanOperator} used to append this parameter to previous ones in the query
+	 * @param booleanOperator the {@see BooleanOperator}
+	 */
 	public void setBooleanOperator(BooleanOperator booleanOperator) {
 		this.booleanOperator = booleanOperator;
 	}
@@ -143,6 +174,11 @@ public class Parameter {
 		return ownerEntityType;
 	}
 
+	/**
+	 * Set the parent entity that owns this parameter.
+	 * Used internally in conjunction with Spring derived finders.
+	 * @param ownerEntityType the parent entity type
+	 */
 	public void setOwnerEntityType(Class ownerEntityType) {
 		this.ownerEntityType = ownerEntityType;
 	}
@@ -151,6 +187,11 @@ public class Parameter {
 		return nestedPropertyName;
 	}
 
+	/**
+	 * Set the nested property name based on the field defined in the parent entity.
+	 * Used internally in conjunction with Spring derived finders.
+	 * @param nestedPropertyName the nested property name
+	 */
 	public void setNestedPropertyName(String nestedPropertyName) {
 		this.nestedPropertyName = nestedPropertyName;
 	}
@@ -159,10 +200,19 @@ public class Parameter {
 		return relationshipType;
 	}
 
+	/**
+	 * Set the relationship type to be used for the nested property.
+	 * Used internally in conjunction with Spring derived finders.
+	 * @param relationshipType the relationship type
+	 */
 	public void setRelationshipType(String relationshipType) {
 		this.relationshipType = relationshipType;
 	}
 
+	/**
+	 * Is this parameter a nested one?
+	 * @return true if nested i.e. connected by a relationship to the entity, false otherwise
+	 */
 	public boolean isNested() {
 		return this.nestedPropertyName != null;
 	}
@@ -171,6 +221,11 @@ public class Parameter {
 		return nestedPropertyType;
 	}
 
+	/**
+	 * Set the type of entity that owns the property defined on it.
+	 * Used internally in conjunction with Spring derived finders.
+	 * @param nestedPropertyType the nested property type
+	 */
 	public void setNestedPropertyType(Class nestedPropertyType) {
 		this.nestedPropertyType = nestedPropertyType;
 	}
@@ -179,6 +234,11 @@ public class Parameter {
 		return nestedEntityTypeLabel;
 	}
 
+	/**
+	 * Set the label of the nested entity type.
+	 * Used internally in conjunction with Spring derived finders.
+	 * @param nestedEntityTypeLabel the label of the nested entity type
+	 */
 	public void setNestedEntityTypeLabel(String nestedEntityTypeLabel) {
 		this.nestedEntityTypeLabel = nestedEntityTypeLabel;
 	}

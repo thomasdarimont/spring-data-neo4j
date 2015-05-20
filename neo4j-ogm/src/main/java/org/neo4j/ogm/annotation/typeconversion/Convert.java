@@ -15,6 +15,7 @@ package org.neo4j.ogm.annotation.typeconversion;
 import java.lang.annotation.*;
 
 /**
+ * Specifies that a field is backed by an implementation of {@see org.neo4j.ogm.typeconversion.AttributeConverter}
  * @author Vince Bickers
  */
 @Retention(RetentionPolicy.RUNTIME)

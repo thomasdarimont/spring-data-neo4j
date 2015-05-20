@@ -15,6 +15,8 @@ package org.neo4j.ogm.annotation.typeconversion;
 import java.lang.annotation.*;
 
 /**
+ * Converts a {@see java.util.Date} to a String in the ISO 8601 format: "yyyy-MM-dd’T’HH:mm:ss.SSSXXX" for storage in the graph
+ * and back to a {@see java.util.Date} during retrieval.
  * @author Vince Bickers
  */
 @Retention(RetentionPolicy.RUNTIME)
