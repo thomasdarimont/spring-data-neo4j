@@ -1,6 +1,21 @@
 Spring Data Neo4j Changelog
 ===========================
 
+Changes in version 4.0.0.RC1 (2015-05-23)
+----------------------------------------
+
+* Full support for Relationship Entities
+* DATAGRAPH-556 - Support pageable queries
+* DATAGRAPH-554 - Support for @QueryResult
+* DATAGRAPH-608 - Support for Type Conversions in @QueryResult Objects
+* DATAGRAPH-564 - Support for SD-Commons infrastructure to make SD-Integration e.g. SD-REST work
+* DATAGRAPH-607 - Return stats for Neo4jTemplate.execute() method
+* DATAGRAPH-629 - Support finders which accept multiple properties or operators other than equals
+* DATAGRAPH-624 - Add Support for Spring's ConversionService
+* DATAGRAPH-606 - Support for Windows
+* DATAGRAPH-602 - Incorrect propagation of @Transactional
+
+
 Changes in version 4.0.0.M1 (2015-03-20)
 ----------------------------------------
 
