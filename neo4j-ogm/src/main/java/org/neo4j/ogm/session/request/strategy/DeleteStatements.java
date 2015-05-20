@@ -12,11 +12,13 @@
 
 package org.neo4j.ogm.session.request.strategy;
 
-import org.neo4j.ogm.cypher.statement.ParameterisedStatement;
-
 import java.util.Collection;
 
+import org.neo4j.ogm.cypher.statement.ParameterisedStatement;
+
 /**
+ * Encapsulates Cypher delete statements.
+ *
  * @author Vince Bickers
  * @author Luanne Misquitta
  */

@@ -24,6 +24,8 @@ import org.neo4j.ogm.cypher.query.GraphRowModelQuery;
 import org.neo4j.ogm.session.Utils;
 
 /**
+ * Encapsulates variable length Cypher queries for nodes.
+ *
  * @author Vince Bickers
  * @author Luanne Misquitta
  */

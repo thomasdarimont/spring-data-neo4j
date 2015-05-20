@@ -24,6 +24,8 @@ import org.neo4j.ogm.exception.InvalidDepthException;
 import org.neo4j.ogm.session.Utils;
 
 /**
+ * Encapsulates variable length Cypher statements for relationships.
+ *
  * @author Luanne Misquitta
  */
 public class VariableDepthRelationshipQuery implements QueryStatements {

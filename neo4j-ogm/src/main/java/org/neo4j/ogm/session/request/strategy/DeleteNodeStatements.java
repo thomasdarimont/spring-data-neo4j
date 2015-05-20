@@ -17,6 +17,8 @@ import org.neo4j.ogm.cypher.statement.ParameterisedStatement;
 import org.neo4j.ogm.session.Utils;
 
 /**
+ * Encapsulates Cypher delete statements for nodes.
+ *
  * @author Luanne Misquitta
  */
 public class DeleteNodeStatements implements DeleteStatements{

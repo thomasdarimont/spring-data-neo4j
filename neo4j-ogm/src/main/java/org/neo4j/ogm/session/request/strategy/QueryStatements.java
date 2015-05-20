@@ -19,6 +19,8 @@ import org.neo4j.ogm.cypher.query.GraphModelQuery;
 import org.neo4j.ogm.cypher.query.GraphRowModelQuery;
 
 /**
+ * Encapsulates Cypher query statements.
+ *
  * @author Vince Bickers
  * @author Luanne Misquitta
  */

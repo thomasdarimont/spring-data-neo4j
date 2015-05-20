@@ -18,6 +18,8 @@ import org.neo4j.ogm.cypher.statement.ParameterisedStatement;
 import org.neo4j.ogm.session.Utils;
 
 /**
+ * Encapsulates Cypher delete statements for relationships.
+ *
  * @author Luanne Misquitta
  */
 public class DeleteRelationshipStatements implements DeleteStatements {

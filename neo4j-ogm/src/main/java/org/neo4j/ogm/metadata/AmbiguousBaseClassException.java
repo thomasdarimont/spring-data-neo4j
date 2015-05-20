@@ -12,7 +12,10 @@
 package org.neo4j.ogm.metadata;
 
 /**
- * @author: Vince Bickers
+ *
+ * Specialised {@link MappingException} thrown when multiple classes are found in the type hierarchy that map to a taxon
+ *
+ * @author Vince Bickers
  */
 public class AmbiguousBaseClassException extends MappingException {
     public AmbiguousBaseClassException(String taxa, Exception cause) {
