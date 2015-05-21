@@ -14,6 +14,7 @@ Changes in version 4.0.0.RC1 (2015-05-23)
 * DATAGRAPH-624 - Add Support for Spring's ConversionService
 * DATAGRAPH-606 - Support for Windows
 * DATAGRAPH-602 - Incorrect propagation of @Transactional
+* DATAGRAPH-637 - "Cannot map iterable" when a node entity contains simple relations to the same entity type but different relation types
 
 
 Changes in version 4.0.0.M1 (2015-03-20)
