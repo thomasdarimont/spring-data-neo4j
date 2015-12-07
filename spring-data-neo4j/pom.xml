@@ -67,7 +67,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
+			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-lucene3</artifactId>
 			<version>${querydsl}</version>
 			<optional>true</optional>
@@ -81,7 +81,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
+			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-apt</artifactId>
 			<version>${querydsl}</version>
 			<scope>provided</scope>
@@ -196,13 +196,19 @@
 			<version>1.6</version>
 			<scope>provided</scope>
 		</dependency>
-
-        <dependency>
+		
+	    <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
             <version>${logback}</version>
             <scope>test</scope>
         </dependency>
+        
+       	<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
 	</dependencies>
 	
 	<build>
@@ -225,7 +231,7 @@
 				<version>${apt}</version>
 				<dependencies>
 					<dependency>
-						<groupId>com.mysema.querydsl</groupId>
+						<groupId>com.querydsl</groupId>
 						<artifactId>querydsl-apt</artifactId>
 						<version>${querydsl}</version>
 					</dependency>

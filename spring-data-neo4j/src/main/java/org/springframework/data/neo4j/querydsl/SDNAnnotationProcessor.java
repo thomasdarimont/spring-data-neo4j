@@ -15,10 +15,10 @@
  */
 package org.springframework.data.neo4j.querydsl;
 
-import com.mysema.query.annotations.*;
-import com.mysema.query.apt.AbstractQuerydslProcessor;
-import com.mysema.query.apt.Configuration;
-import com.mysema.query.apt.DefaultConfiguration;
+import com.querydsl.core.annotations.*;
+import com.querydsl.apt.AbstractQuerydslProcessor;
+import com.querydsl.apt.Configuration;
+import com.querydsl.apt.DefaultConfiguration;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 
 import javax.annotation.processing.RoundEnvironment;
